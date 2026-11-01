@@ -17,7 +17,17 @@
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
+}
+
+.nav-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 1.5px solid var(--color-accent-dim);
+  box-shadow: 0 0 10px rgba(196, 240, 66, 0.2);
 }
 
 .nav-logo {

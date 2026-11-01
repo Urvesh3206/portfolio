@@ -22,6 +22,7 @@ export default function Navbar() {
   return (
     <nav ref={navRef} className="navbar">
       <div className="nav-left">
+        <img src="/profile.jpg" alt="Urvesh" className="nav-avatar" />
         <span className="nav-logo">
           <span className="nav-logo-accent">U</span>R
         </span>
