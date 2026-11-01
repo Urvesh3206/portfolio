@@ -10,7 +10,7 @@ const education = [
     degree: 'B.Tech — Computer Science Engineering',
     institution: 'Ajeenkya D Y Patil College of Engineering',
     location: 'Pune, Maharashtra',
-    grade: 'GPA 4.0 / 4.0',
+    grade: 'CGPA 7.66',
     gradeAccent: true,
     period: '2021 — 2025',
   },

@@ -54,8 +54,8 @@ export default function Summary() {
 
         <div className="summary-aside">
           <div className="summary-aside-item">
-            <span className="summary-aside-number">4.0</span>
-            <span className="summary-aside-label">GPA</span>
+            <span className="summary-aside-number">7.66</span>
+            <span className="summary-aside-label">CGPA</span>
           </div>
           <div className="summary-aside-item">
             <span className="summary-aside-number">18%</span>
