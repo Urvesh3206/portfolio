@@ -1,0 +1,215 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 3rem 6rem;
+  position: relative;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.hero-top-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+}
+
+.hero-label-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+.hero-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-border));
+  margin-bottom: 3rem;
+  transform-origin: left;
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  perspective: 600px;
+}
+
+.hero-char {
+  display: inline-block;
+}
+
+.hero-space {
+  width: 0.3em;
+}
+
+.hero-title {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  max-width: 500px;
+}
+
+.hero-title-accent {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s;
+}
+
+.hero-meta-item:hover {
+  color: var(--color-accent);
+}
+
+.hero-meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+}
+
+.hero-meta-value {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.hero-socials {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.hero-social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+  padding: 0.65rem 1.3rem;
+  border: 1px solid var(--color-border);
+  transition: all 0.35s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-social-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(196, 240, 66, 0.06), transparent);
+  transition: left 0.5s ease;
+}
+
+.hero-social-link:hover::before {
+  left: 100%;
+}
+
+.hero-social-link:hover {
+  border-color: var(--color-accent-dim);
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.hero-social-link svg {
+  flex-shrink: 0;
+}
+
+.hero-social-arrow {
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+  margin-left: 0.2rem;
+}
+
+.hero-social-link:hover .hero-social-arrow {
+  transform: translate(3px, -3px);
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 3rem;
+  right: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+  writing-mode: vertical-rl;
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(180deg, var(--color-accent), transparent);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 0 1.5rem 4rem;
+  }
+  .hero-meta {
+    gap: 1.5rem;
+    flex-direction: column;
+  }
+  .hero-socials {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .hero-scroll-hint {
+    display: none;
+  }
+}
