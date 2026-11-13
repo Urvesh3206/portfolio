@@ -7,9 +7,13 @@ export default function Cursor() {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    let mouseX = 0, mouseY = 0
-    let dotX = 0, dotY = 0
-    let ringX = 0, ringY = 0
+    let mouseX = window.innerWidth / 2
+    let mouseY = window.innerHeight / 2
+    let dotX = mouseX
+    let dotY = mouseY
+    let ringX = mouseX
+    let ringY = mouseY
+    let animId = null
 
     const onMove = (e) => {
       mouseX = e.clientX
@@ -18,27 +22,29 @@ export default function Cursor() {
     const onEnter = () => setHidden(false)
     const onLeave = () => setHidden(true)
 
-    window.addEventListener('mousemove', onMove)
+    window.addEventListener('mousemove', onMove, { passive: true })
     document.addEventListener('mouseenter', onEnter)
     document.addEventListener('mouseleave', onLeave)
 
     const tick = () => {
-      dotX += (mouseX - dotX) * 0.25
-      dotY += (mouseY - dotY) * 0.25
-      ringX += (mouseX - ringX) * 0.08
-      ringY += (mouseY - ringY) * 0.08
+      // Snappier interpolation (0.35 & 0.16) avoids dragging/lag feeling
+      dotX += (mouseX - dotX) * 0.4
+      dotY += (mouseY - dotY) * 0.4
+      ringX += (mouseX - ringX) * 0.16
+      ringY += (mouseY - ringY) * 0.16
 
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${dotX - 3}px, ${dotY - 3}px)`
+        dotRef.current.style.transform = `translate3d(${dotX - 3}px, ${dotY - 3}px, 0)`
       }
       if (ringRef.current) {
-        ringRef.current.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`
+        ringRef.current.style.transform = `translate3d(${ringX - 16}px, ${ringY - 16}px, 0)`
       }
-      requestAnimationFrame(tick)
+      animId = requestAnimationFrame(tick)
     }
-    tick()
+    animId = requestAnimationFrame(tick)
 
     return () => {
+      if (animId) cancelAnimationFrame(animId)
       window.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseenter', onEnter)
       document.removeEventListener('mouseleave', onLeave)

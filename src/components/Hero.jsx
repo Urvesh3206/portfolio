@@ -10,82 +10,91 @@ export default function Hero() {
   const lineRef = useRef(null)
   const socialsRef = useRef(null)
   const portraitRef = useRef(null)
+  const rectRef = useRef(null)
 
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.3 })
+    const tl = gsap.timeline({ delay: 0.2 })
 
     tl.fromTo(
       lineRef.current,
       { scaleX: 0 },
-      { scaleX: 1, duration: 1.4, ease: 'power4.inOut' }
+      { scaleX: 1, duration: 1.2, ease: 'power4.inOut' }
     )
     .fromTo(
       nameRef.current.querySelectorAll('.hero-char'),
-      { y: 120, opacity: 0, rotateX: -80 },
+      { y: 80, opacity: 0, rotateX: -60 },
       {
         y: 0,
         opacity: 1,
         rotateX: 0,
-        duration: 1.2,
-        stagger: 0.04,
+        duration: 1.0,
+        stagger: 0.03,
         ease: 'power4.out',
       },
-      '-=0.8'
+      '-=0.7'
     )
     .fromTo(
       portraitRef.current,
-      { y: 80, opacity: 0, scale: 0.9, rotateY: 15 },
+      { y: 50, opacity: 0, scale: 0.94 },
       {
         y: 0,
         opacity: 1,
         scale: 1,
-        rotateY: 0,
-        duration: 1.3,
+        duration: 1.1,
         ease: 'power3.out',
       },
-      '-=1.0'
+      '-=0.8'
     )
     .fromTo(
       titleRef.current,
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
-      '-=0.7'
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+      '-=0.6'
     )
     .fromTo(
       metaRef.current.children,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
+      { y: 15, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' },
       '-=0.5'
     )
     .fromTo(
       socialsRef.current.children,
-      { y: 16, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' },
+      { y: 12, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, stagger: 0.06, ease: 'power3.out' },
       '-=0.3'
     )
   }, [])
 
-  // Interactive mouse tilt on portrait
+  // Optimized mouse tilt without layout thrashing
+  const handleMouseEnter = () => {
+    if (portraitRef.current) {
+      rectRef.current = portraitRef.current.getBoundingClientRect()
+    }
+  }
+
   const handleMouseMove = (e) => {
     if (!portraitRef.current) return
-    const rect = portraitRef.current.getBoundingClientRect()
+    const rect = rectRef.current || portraitRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left - rect.width / 2
     const y = e.clientY - rect.top - rect.height / 2
     gsap.to(portraitRef.current, {
-      rotateY: (x / rect.width) * 14,
-      rotateX: (-y / rect.height) * 14,
-      duration: 0.6,
+      rotateY: (x / rect.width) * 12,
+      rotateX: (-y / rect.height) * 12,
+      duration: 0.35,
       ease: 'power2.out',
+      overwrite: 'auto',
     })
   }
 
   const handleMouseLeave = () => {
     if (!portraitRef.current) return
+    rectRef.current = null
     gsap.to(portraitRef.current, {
       rotateY: 0,
       rotateX: 0,
-      duration: 1,
-      ease: 'elastic.out(1, 0.5)',
+      duration: 0.7,
+      ease: 'power2.out',
+      overwrite: 'auto',
     })
   }
 
@@ -165,11 +174,11 @@ export default function Hero() {
 
           <div
             className="hero-portrait-wrapper"
+            onMouseEnter={handleMouseEnter}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
             <div ref={portraitRef} className="hero-portrait-card">
-              <div className="portrait-glare" />
               <div className="portrait-frame">
                 <span className="portrait-corner portrait-corner--tl" />
                 <span className="portrait-corner portrait-corner--tr" />

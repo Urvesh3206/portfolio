@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Lenis from 'lenis'
 import gsap from 'gsap'
@@ -19,55 +19,51 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
   const containerRef = useRef(null)
-  const [mouse, setMouse] = useState({ x: 0, y: 0 })
-  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
+    // Highly-optimized, responsive smooth scrolling
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
     })
 
-    lenis.on('scroll', (e) => {
-      setScrollY(e.animatedScroll)
-      ScrollTrigger.update()
-    })
+    // Update ScrollTrigger without triggering any React state changes
+    lenis.on('scroll', ScrollTrigger.update)
 
-    gsap.ticker.add((time) => {
+    const updateLenis = (time) => {
       lenis.raf(time * 1000)
-    })
+    }
+
+    gsap.ticker.add(updateLenis)
     gsap.ticker.lagSmoothing(0)
 
     return () => {
       lenis.destroy()
-      gsap.ticker.remove(lenis.raf)
+      gsap.ticker.remove(updateLenis)
     }
-  }, [])
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMouse({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: -(e.clientY / window.innerHeight) * 2 + 1,
-      })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
   return (
     <div ref={containerRef} className="app">
       <Cursor />
       
-      {/* 3D Background Canvas */}
+      {/* 3D Background Canvas - runs completely outside React render loop */}
       <div className="canvas-container">
         <Canvas
           camera={{ position: [0, 0, 12], fov: 55 }}
-          dpr={[1, 1.5]}
-          gl={{ antialias: true, alpha: true }}
+          dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 1.75)]}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance',
+            stencil: false,
+            depth: true,
+          }}
         >
-          <FloatingScene mouse={mouse} scrollY={scrollY} />
+          <FloatingScene />
         </Canvas>
       </div>
 
